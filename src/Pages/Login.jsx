@@ -19,11 +19,11 @@ const Login = () => {
   return (
     <section id="login">
       <div className=" mx-auto container p-4">
-        <div className="bg-white p-2 py-5 w-full max-w-md mx-auto">
+        <div className="bg-white p-4 w-full max-w-md mx-auto">
           <div className="w-20 h-20 mx-auto">
             <img src={LogoGif} alt="" />
           </div>
-          <form action="">
+          <form className="pt-6">
             <div className="grid">
               <label htmlFor="">Email : </label>
               <div className="bg-slate-100 p-2">
@@ -62,6 +62,13 @@ const Login = () => {
               Login
             </button>
           </form>
+
+          <p className="my-5">
+            Don't Have Account ?{" "}
+            <Link className="hover:underline hover:text-red-600" to={"/signup"}>
+              Sign Up
+            </Link>
+          </p>
         </div>
       </div>
     </section>

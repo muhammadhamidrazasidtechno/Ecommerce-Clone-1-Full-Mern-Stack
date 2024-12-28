@@ -1,72 +1,147 @@
-import React from "react";
+import React, { useState } from "react";
+import LogoGif from "../assest/signin.gif";
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import ImageToBase64 from "../helpers/ImageToBase64";
 
 const SignUp = () => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+    useState(false);
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+    name: "",
+    confirmPassword: "",
+    profilePic: "",
+  });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("====================================");
+    console.log(data);
+    console.log("====================================");
+    // Handle login logic here
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+
+    const image = await ImageToBase64(file);
+    setData({ ...data, profilePic: image });
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded shadow-md">
-        <h2 className="text-2xl font-bold text-center">Sign Up</h2>
-        <form className="space-y-4">
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              className="w-full px-3 py-2 mt-1 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
-            />
+    <section id="signup">
+      <div className=" mx-auto container p-4">
+        <div className="bg-white p-5 w-full max-w-sm mx-auto">
+          <div className="w-20 h-20 mx-auto relative overflow-hidden rounded-full">
+            <div>
+              <img src={data?.profilePic ? data?.profilePic : LogoGif} alt="" />
+            </div>
+            <form>
+              <label>
+                <div className="text-xs bg-opacity-85 bg-slate-200 pb-4 pt-2 text-center absolute bottom-0 w-full cursor-pointer">
+                  Upload Image
+                </div>
+                <input
+                  type="file"
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+              </label>
+            </form>
           </div>
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              className="w-full px-3 py-2 mt-1 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              className="w-full px-3 py-2 mt-1 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="confirm-password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              id="confirm-password"
-              className="w-full px-3 py-2 mt-1 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-          >
-            Sign Up
-          </button>
-        </form>
+          <form onSubmit={handleSubmit} className="pt-6 flex flex-col gap-2">
+            <div className="grid">
+              <label htmlFor="">Name : </label>
+              <div className="bg-slate-100 p-2 ">
+                <input
+                  type="name"
+                  onChange={handleChange}
+                  name="name"
+                  placeholder="Enter Name"
+                  className="w-full h-full outline-none bg-transparent"
+                />
+              </div>
+            </div>
+            <div className="grid">
+              <label htmlFor="">Email : </label>
+              <div className="bg-slate-100 p-2">
+                <input
+                  type="email"
+                  onChange={handleChange}
+                  name="email"
+                  placeholder="Enter Email"
+                  className="w-full h-full outline-none bg-transparent"
+                />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="">Password : </label>
+              <div className="bg-slate-100 p-2 flex">
+                <input
+                  onChange={handleChange}
+                  name="password"
+                  type={isPasswordVisible ? "text" : "password"}
+                  placeholder="Enter Password"
+                  className="w-full h-full outline-none bg-transparent"
+                />
+                <div>
+                  <span
+                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                    className="cursor-pointer"
+                  >
+                    {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <label htmlFor="">Confirm Password : </label>
+              <div className="bg-slate-100 p-2 flex">
+                <input
+                  onChange={handleChange}
+                  name="confirmPassword"
+                  type={isConfirmPasswordVisible ? "text" : "password"}
+                  placeholder="Enter Confirm Password"
+                  className="w-full h-full outline-none bg-transparent"
+                />
+                <div>
+                  <span
+                    onClick={() =>
+                      setIsConfirmPasswordVisible(!isConfirmPasswordVisible)
+                    }
+                    className="cursor-pointer"
+                  >
+                    {isConfirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+                  </span>
+                </div>
+              </div>
+              <Link
+                className="block w-fit ml-auto hover:underline hover:text-red-600"
+                to={"/forget-password"}
+              >
+                Foget Password
+              </Link>
+            </div>
+            <button className="bg-red-600 text-white w-full px-6 py-2 max-w-[150px] rounded-full hover:bg-red-800 hover:scale-110 transition-all mx-auto block mt-6">
+              Sign Up
+            </button>
+          </form>
+
+          <p className="my-5">
+            Already Have Account ?{" "}
+            <Link className="hover:underline hover:text-red-600" to={"/login"}>
+              Login
+            </Link>
+          </p>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

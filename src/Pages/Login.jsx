@@ -6,29 +6,37 @@ import { Link } from "react-router-dom";
 
 const Login = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("====================================");
+    console.log(data);
+    console.log("====================================");
     // Handle login logic here
-    console.log("Email:", email);
-    console.log("Password:", password);
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
   };
 
   return (
     <section id="login">
       <div className=" mx-auto container p-4">
-        <div className="bg-white p-4 w-full max-w-md mx-auto">
+        <div className="bg-white p-5 w-full max-w-sm mx-auto">
           <div className="w-20 h-20 mx-auto">
             <img src={LogoGif} alt="" />
           </div>
-          <form className="pt-6">
+          <form onSubmit={handleSubmit} className="pt-6 flex flex-col gap-2">
             <div className="grid">
               <label htmlFor="">Email : </label>
               <div className="bg-slate-100 p-2">
                 <input
                   type="email"
+                  onChange={handleChange}
+                  name="email"
                   placeholder="Enter Email"
                   className="w-full h-full outline-none bg-transparent"
                 />
@@ -38,6 +46,8 @@ const Login = () => {
               <label htmlFor="">Password : </label>
               <div className="bg-slate-100 p-2 flex">
                 <input
+                  onChange={handleChange}
+                  name="password"
                   type={isPasswordVisible ? "text" : "password"}
                   placeholder="Enter Password"
                   className="w-full h-full outline-none bg-transparent"

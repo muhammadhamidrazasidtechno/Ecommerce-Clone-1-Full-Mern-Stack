@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./Config/db.js";
+import router from "./Routes/index.js";
 dotenv.config();
 
 const app = express();
@@ -16,6 +17,4 @@ connectDB().then(() => {
   });
 });
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+app.use("/api", router);

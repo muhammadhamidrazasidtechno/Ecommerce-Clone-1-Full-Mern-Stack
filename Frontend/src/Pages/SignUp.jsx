@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import LogoGif from "../assest/signin.gif";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ImageToBase64 from "../helpers/ImageToBase64";
+import { signup } from "../Common";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const navigation = useNavigate();
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
   const [data, setData] = useState({
@@ -16,13 +19,29 @@ const SignUp = () => {
     confirmPassword: "",
     profilePic: "",
   });
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("====================================");
-    console.log(data);
-    console.log("====================================");
-    // Handle login logic here
+
+    if (data.password !== data.confirmPassword) {
+      toast.error("Password and Confirm Password do not match");
+      return;
+    }
+
+    try {
+      const response = await signup(data);
+
+      if (response.success) {
+        toast.success(response.message);
+        navigation("/login");
+      } else {
+        toast.error(response.message || "Signup failed");
+      }
+    } catch (error) {
+      console.error("Error during signup:", error);
+      toast.error(error || "An error occurred during signup");
+    }
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
